@@ -1,0 +1,127 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 4.0.0 #11528 (Linux)
+                              4 ;--------------------------------------------------------
+                              5 	.module main
+                              6 	.optsdcc -mgbz80
+                              7 	
+                              8 ;--------------------------------------------------------
+                              9 ; Public variables in this module
+                             10 ;--------------------------------------------------------
+                             11 	.globl _main
+                             12 	.globl _move_sprite
+                             13 	.globl _set_sprite_tile
+                             14 	.globl _set_sprite_data
+                             15 	.globl _delay
+                             16 	.globl _Sprite_Index
+                             17 ;--------------------------------------------------------
+                             18 ; special function registers
+                             19 ;--------------------------------------------------------
+                             20 ;--------------------------------------------------------
+                             21 ; ram data
+                             22 ;--------------------------------------------------------
+                             23 	.area _DATA
+   0000                      24 _Sprite_Index::
+   0000                      25 	.ds 1
+                             26 ;--------------------------------------------------------
+                             27 ; absolute external ram data
+                             28 ;--------------------------------------------------------
+                             29 	.area _DABS (ABS)
+                             30 ;--------------------------------------------------------
+                             31 ; global & static initialisations
+                             32 ;--------------------------------------------------------
+                             33 	.area _HOME
+                             34 	.area _GSINIT
+                             35 	.area _GSFINAL
+                             36 	.area _GSINIT
+                             37 ;main.c:4: UINT8 Sprite_Index = 0;
+   0000 21r00r00             38 	ld	hl, #_Sprite_Index
+   0003 36 00                39 	ld	(hl), #0x00
+                             40 ;--------------------------------------------------------
+                             41 ; Home
+                             42 ;--------------------------------------------------------
+                             43 	.area _HOME
+                             44 	.area _HOME
+                             45 ;--------------------------------------------------------
+                             46 ; code
+                             47 ;--------------------------------------------------------
+                             48 	.area _CODE
+                             49 ;main.c:6: int main (void){
+                             50 ;	---------------------------------
+                             51 ; Function main
+                             52 ; ---------------------------------
+   0000                      53 _main::
+                             54 ;main.c:7: set_sprite_data(0, 2, Jean_Bob);
+   0000 21r00r00             55 	ld	hl, #_Jean_Bob
+   0003 E5                   56 	push	hl
+   0004 3E 02                57 	ld	a, #0x02
+   0006 F5                   58 	push	af
+   0007 33                   59 	inc	sp
+   0008 AF                   60 	xor	a, a
+   0009 F5                   61 	push	af
+   000A 33                   62 	inc	sp
+   000B CDr00r00             63 	call	_set_sprite_data
+   000E E8 04                64 	add	sp, #4
+                             65 ;main.c:8: set_sprite_tile(0, 0);
+   0010 AF                   66 	xor	a, a
+   0011 F5                   67 	push	af
+   0012 33                   68 	inc	sp
+   0013 AF                   69 	xor	a, a
+   0014 F5                   70 	push	af
+   0015 33                   71 	inc	sp
+   0016 CDr00r00             72 	call	_set_sprite_tile
+   0019 E8 02                73 	add	sp, #2
+                             74 ;main.c:9: move_sprite(0, 80, 72);
+   001B 3E 48                75 	ld	a, #0x48
+   001D F5                   76 	push	af
+   001E 33                   77 	inc	sp
+   001F 3E 50                78 	ld	a, #0x50
+   0021 F5                   79 	push	af
+   0022 33                   80 	inc	sp
+   0023 AF                   81 	xor	a, a
+   0024 F5                   82 	push	af
+   0025 33                   83 	inc	sp
+   0026 CDr00r00             84 	call	_move_sprite
+   0029 E8 03                85 	add	sp, #3
+                             86 ;main.c:10: SHOW_SPRITES;
+   002B 21 40 FF             87 	ld	hl, #0xff40
+   002E 7E                   88 	ld	a, (hl)
+   002F CB CF                89 	set	1, a
+   0031 21 40 FF             90 	ld	hl, #0xff40
+   0034 77                   91 	ld	(hl), a
+                             92 ;main.c:12: while (1){
+   0035                      93 00105$:
+                             94 ;main.c:13: if (Sprite_Index == 0){
+   0035 21r00r00             95 	ld	hl, #_Sprite_Index
+   0038 7E                   96 	ld	a, (hl)
+   0039 B7                   97 	or	a, a
+   003A 20 04                98 	jr	NZ,00102$
+                             99 ;main.c:14: Sprite_Index = 1;
+   003C 36 01               100 	ld	(hl), #0x01
+   003E 18 05               101 	jr	00103$
+   0040                     102 00102$:
+                            103 ;main.c:18: Sprite_Index = 0;
+   0040 21r00r00            104 	ld	hl, #_Sprite_Index
+   0043 36 00               105 	ld	(hl), #0x00
+   0045                     106 00103$:
+                            107 ;main.c:21: set_sprite_tile(0, Sprite_Index);
+   0045 21r00r00            108 	ld	hl, #_Sprite_Index
+   0048 7E                  109 	ld	a, (hl)
+   0049 F5                  110 	push	af
+   004A 33                  111 	inc	sp
+   004B AF                  112 	xor	a, a
+   004C F5                  113 	push	af
+   004D 33                  114 	inc	sp
+   004E CDr00r00            115 	call	_set_sprite_tile
+   0051 E8 02               116 	add	sp, #2
+                            117 ;main.c:22: delay(1000);
+   0053 21 E8 03            118 	ld	hl, #0x03e8
+   0056 E5                  119 	push	hl
+   0057 CDr00r00            120 	call	_delay
+   005A E8 02               121 	add	sp, #2
+   005C 18 D7               122 	jr	00105$
+                            123 ;main.c:24: return 0;
+                            124 ;main.c:25: }
+   005E C9                  125 	ret
+                            126 	.area _CODE
+                            127 	.area _CABS (ABS)
