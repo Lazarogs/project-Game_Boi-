@@ -1,6 +1,6 @@
 /*
 
- SPRITES.H
+ SPRITE.H
 
  Include File.
 
@@ -10,7 +10,7 @@
   Compression          : None.
   Counter              : None.
   Tile size            : 8 x 8
-  Tiles                : 0 to 0
+  Tiles                : 0 to 1
 
   Palette colors       : None.
   SGB Palette          : None.
@@ -24,8 +24,8 @@
 
 
 /* Bank of tiles. */
-#define Jean_BobBank 0
+#define jean_bobBank 0
 /* Start of tile array. */
-extern unsigned char Jean_Bob[];
+extern unsigned char jean_bob[];
 
-/* End of SPRITES.H */
+/* End of SPRITE.H */
