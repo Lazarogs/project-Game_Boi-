@@ -154,19 +154,31 @@ _main::
 	ld	hl, #0xff40
 	ld	(hl), a
 ;main.c:13: while(1){
-00107$:
+00111$:
 ;main.c:14: switch(joypad()){
 	call	_joypad
-	ld	a, e
-	cp	a, #0x01
-	jr	Z,00102$
-	cp	a, #0x02
-	jr	Z,00101$
-	cp	a, #0x04
-	jr	Z,00103$
-	sub	a, #0x08
-	jp	Z,00104$
+	ld	c, e
+	ld	a, #0x0a
+	sub	a, c
+	jp	C, 00109$
+	ld	b, #0x00
+	ld	hl, #00125$
+	add	hl, bc
+	add	hl, bc
+	add	hl, bc
+	jp	(hl)
+00125$:
+	jp	00109$
+	jp	00104$
+	jp	00101$
+	jp	00109$
+	jp	00107$
 	jp	00105$
+	jp	00102$
+	jp	00109$
+	jp	00108$
+	jp	00106$
+	jp	00103$
 ;main.c:15: case J_LEFT:
 00101$:
 ;main.c:16: scroll_sprite(0, -1, 0);
@@ -182,10 +194,42 @@ _main::
 	call	_scroll_sprite
 	add	sp, #3
 ;main.c:17: break;
-	jp	00105$
-;main.c:18: case J_RIGHT:
+	jp	00109$
+;main.c:18: case J_LEFT + J_UP:
 00102$:
-;main.c:19: scroll_sprite(0, 1, 0);
+;main.c:19: scroll_sprite(0, -1, -1);
+	ld	a, #0xff
+	push	af
+	inc	sp
+	ld	a, #0xff
+	push	af
+	inc	sp
+	xor	a, a
+	push	af
+	inc	sp
+	call	_scroll_sprite
+	add	sp, #3
+;main.c:20: break;
+	jp	00109$
+;main.c:21: case J_LEFT + J_DOWN:
+00103$:
+;main.c:22: scroll_sprite(0, -1, 1);
+	ld	a, #0x01
+	push	af
+	inc	sp
+	ld	a, #0xff
+	push	af
+	inc	sp
+	xor	a, a
+	push	af
+	inc	sp
+	call	_scroll_sprite
+	add	sp, #3
+;main.c:23: break;
+	jp	00109$
+;main.c:24: case J_RIGHT:
+00104$:
+;main.c:25: scroll_sprite(0, 1, 0);
 	xor	a, a
 	push	af
 	inc	sp
@@ -197,11 +241,43 @@ _main::
 	inc	sp
 	call	_scroll_sprite
 	add	sp, #3
-;main.c:20: break;
-	jr	00105$
-;main.c:21: case J_UP:
-00103$:
-;main.c:22: scroll_sprite(0, 0, -1);
+;main.c:26: break;
+	jp	00109$
+;main.c:27: case J_RIGHT + J_UP:
+00105$:
+;main.c:28: scroll_sprite(0, 1, -1);
+	ld	a, #0xff
+	push	af
+	inc	sp
+	ld	a, #0x01
+	push	af
+	inc	sp
+	xor	a, a
+	push	af
+	inc	sp
+	call	_scroll_sprite
+	add	sp, #3
+;main.c:29: break;
+	jp	00109$
+;main.c:30: case J_RIGHT + J_DOWN:
+00106$:
+;main.c:31: scroll_sprite(0, 1, 1);
+	ld	a, #0x01
+	push	af
+	inc	sp
+	ld	a, #0x01
+	push	af
+	inc	sp
+	xor	a, a
+	push	af
+	inc	sp
+	call	_scroll_sprite
+	add	sp, #3
+;main.c:32: break;	
+	jr	00109$
+;main.c:33: case J_UP:
+00107$:
+;main.c:34: scroll_sprite(0, 0, -1);
 	ld	a, #0xff
 	push	af
 	inc	sp
@@ -213,11 +289,11 @@ _main::
 	inc	sp
 	call	_scroll_sprite
 	add	sp, #3
-;main.c:23: break;
-	jr	00105$
-;main.c:24: case J_DOWN:
-00104$:
-;main.c:25: scroll_sprite(0, 0, 1);
+;main.c:35: break;
+	jr	00109$
+;main.c:36: case J_DOWN:
+00108$:
+;main.c:37: scroll_sprite(0, 0, 1);
 	ld	a, #0x01
 	push	af
 	inc	sp
@@ -229,9 +305,9 @@ _main::
 	inc	sp
 	call	_scroll_sprite
 	add	sp, #3
-;main.c:28: }
-00105$:
-;main.c:30: set_sprite_tile(0, currentsprite);
+;main.c:40: }
+00109$:
+;main.c:41: set_sprite_tile(0, currentsprite);
 	xor	a, a
 	push	af
 	inc	sp
@@ -240,13 +316,13 @@ _main::
 	inc	sp
 	call	_set_sprite_tile
 	add	sp, #2
-;main.c:31: delay(10);
+;main.c:42: delay(10);
 	ld	hl, #0x000a
 	push	hl
 	call	_delay
 	add	sp, #2
-	jp	00107$
-;main.c:33: }
+	jp	00111$
+;main.c:44: }
 	ret
 	.area _CODE
 	.area _CABS (ABS)
