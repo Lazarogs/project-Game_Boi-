@@ -38,7 +38,6 @@ void main (void){
 				break;
 	
 		}
-		set_sprite_tile(0, currentsprite);
-		delay(10);
+		delay(25);
 	}
 }

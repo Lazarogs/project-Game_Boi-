@@ -307,22 +307,13 @@ _main::
 	add	sp, #3
 ;main.c:40: }
 00109$:
-;main.c:41: set_sprite_tile(0, currentsprite);
-	xor	a, a
-	push	af
-	inc	sp
-	xor	a, a
-	push	af
-	inc	sp
-	call	_set_sprite_tile
-	add	sp, #2
-;main.c:42: delay(10);
-	ld	hl, #0x000a
+;main.c:41: delay(25);
+	ld	hl, #0x0019
 	push	hl
 	call	_delay
 	add	sp, #2
 	jp	00111$
-;main.c:44: }
+;main.c:43: }
 	ret
 	.area _CODE
 	.area _CABS (ABS)
