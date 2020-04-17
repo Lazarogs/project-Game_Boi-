@@ -1,5 +1,5 @@
 character_improved.gb: character_improved.ihx
-	/opt/gbdk-n/bin/gbdk-n-make-rom.sh character_improved.ihx character_improved.gb
+	/opt/gbdk-n/bin/gbdk-n-make-rom.sh  -yc character_improved.ihx character_improved.gb
 	rm character_improved.ihx
 
 character_improved.ihx: main.rel character.rel

@@ -1,13 +1,22 @@
 #include <gb/gb.h>
+#include <gb/cgb.h> //ajoute des couleurs simples à utiliser
 #include "character.h" // sprites de notre personnage
-//On va ici créer des variables pour le personnage à l'écran :
 
-#define PLAYER 0 // Nous permettra d'identifier le sprite de notre joueur, au lieu d'appeller une valeur magique
+// définition de valeurs, pour ajouter de la lisibilité au code.
+#define PLAYER 0
+#define PLAYER_PALETTE 0
+
 _Bool is_flippedX = 0; //va nous permettre de faire retourner le sprite de notre personnage, nous permettant d'économiser un sprite dans la VRAM
 
+UWORD spritePalette[] = { // les couleurs de notre palette
+	0, RGB_LIGHTFLESH, RGB_BLUE, RGB_BLACK
+}; 
+
 void main(){
+	set_sprite_palette(PLAYER_PALETTE, 3, spritePalette);
 	set_sprite_data(0, 3, character); //On charge les images de notre personnage.
 	set_sprite_tile(PLAYER, 0);
+	set_sprite_prop(PLAYER, PLAYER_PALETTE); //On donne la palette de couleurs PLAYER_PALETTE a notre joueur
 	move_sprite(PLAYER, 80, 72); // position de départ
 	
 	SHOW_SPRITES;
@@ -18,7 +27,7 @@ void main(){
 			case J_RIGHT: 
 				if (is_flippedX == 1){
 						set_sprite_tile(PLAYER, 2);
-						set_sprite_prop(PLAYER, 0 );
+						set_sprite_prop(PLAYER, 0);
 						is_flippedX = 0;
 				}
 				else {	
@@ -48,4 +57,3 @@ void main(){
 		delay(100);
 	}
 }
-
