@@ -11,10 +11,18 @@
 #define BACKGROUND 0
 
 _Bool is_flippedX = 0; //va nous permettre de faire retourner le sprite de notre personnage, nous permettant d'économiser un sprite dans la VRAM
+UINT8 player_screenX = 80; //ces deux valeurs représentent le joueur à l'écran, pas sur la carte
+UINT8 player_screenY = 72;
 
-UWORD spritePalette[] = { // les couleurs de notre palette
-	0, RGB_LIGHTFLESH, RGB_BLUE, RGB_BLACK //palette du joueur
+UINT8 bg_X = 0; //ces deux valeurs représentent la position de la carte, c'est à dire ou en est on du scroll
+UINT8 bg_Y = 0;
+
+//Palettes du joueur:
+UWORD spritePalette[] = {
+	0, RGB_LIGHTFLESH, RGB_BLUE, RGB_BLACK 
 }; 
+
+//palette de l'arrière plan
 
 UWORD backgroundPalette[] = {
 	0, BG_GREY, BG_RED, BG_GREEN
@@ -47,7 +55,8 @@ void main(){
 				else {	
 					set_sprite_tile(PLAYER, 2);
 				}	
-				scroll_bkg(8, 0);	
+				scroll_bkg(8, 0);
+				bg_X  += 8;	
 				break;
 			case J_LEFT:
 				if (is_flippedX == 1){
@@ -59,14 +68,17 @@ void main(){
 					is_flippedX = 1;
 				}
 				scroll_bkg(-8, 0);
+				bg_X += -8;
 				break;
 			case J_UP:
 				set_sprite_tile(PLAYER, 1);
 				scroll_bkg(0, -8);
+				bg_Y += -8;
 				break;
 			case J_DOWN:
 				set_sprite_tile(PLAYER, 0);
 				scroll_bkg(0, 8);
+				bg_Y += 8;
 			       break;
 		}
 		delay(100);
